@@ -1,0 +1,39 @@
+#!/usr/local/bin/zsh
+#
+# anything version manager
+
+if [ -z "$DOCKER_COMMAND" ]; then
+  DOCKER_COMMAND="docker"
+fi
+
+if [[ "$(which $DOCKER_COMMAND)" =~ "not found" ]]; then
+  echo "Error: avm requires Docker to be installed."
+  exit 1
+fi
+
+if [ -z "$1" ]; then
+  echo "Usage: avm SERVICE [VERSION] [OPTIONS]"
+  exit 1
+fi
+
+service=$1
+
+if [ -z "$2" ]; then
+  version="latest"
+else
+  version=$2
+fi
+
+if [ -f ~/.avm/$service ]; then
+  args="$(cat ~/.avm/$service)"
+fi
+
+args=$argv[3,-1]
+
+if [ $AVM_DRY_RUN ]; then
+  echo "docker image pull $service:$version"
+  echo "docker run $args $service:$version"
+else
+  docker image pull $service:$version
+  docker run $args $service:$version
+fi

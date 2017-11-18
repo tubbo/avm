@@ -24,9 +24,7 @@ After installing, run the `avm` command to start a service in the
 foreground. For example, if you wanted to install and run Elasticsearch
 v1.5.2:
 
-```bash
-$ avm elasticsearch 1.5.2
-```
+    avm elasticsearch 1.5.2
 
 For most services, this won't be suitable because the port of the
 service won't be properly mapped. For this, you'll need a **service
@@ -37,9 +35,7 @@ first-run commands. In the elasticsearch realm, we might want to have a
 service descriptor file at `~/.avm/elasticsearch` that looks something
 like the following:
 
-```bash
--p 9200:9200 -p 9300:9300 -e "discovery.type=single-node"
-```
+    -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node"
 
 This string of text gets passed verbatim to `docker run`.
 

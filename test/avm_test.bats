@@ -36,7 +36,8 @@ setup() {
   result="${lines[1]}"
   rm ~/.avm/foo
 
-  [ "$result" = "docker run  foo:1.4.5" ]
+  echo $result
+  [ "$result" = "docker run -p 9200:9200 foo:1.4.5" ]
 }
 
 @test "command arguments overrides file" {
@@ -45,5 +46,6 @@ setup() {
   result="${lines[1]}"
   rm ~/.avm/foo
 
+  echo $result
   [ "$result" = "docker run -p 9300:9300 foo:1.4.5" ]
 }

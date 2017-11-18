@@ -29,7 +29,7 @@ if [ -f "$HOME/.avm/$service" ]; then
   args="$(cat $HOME/.avm/$service)"
 fi
 
-if [ -z "$args" ]; then
+if [ "$#" -gt 2 ]; then
   args=$argv[3,-1]
 fi
 

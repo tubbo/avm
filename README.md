@@ -10,13 +10,13 @@ already installed.
 
 Install with Homebrew:
 
-    brew install tubbo/avm/avm
+    brew install https://raw.githubusercontent.com/tubbo/avm/master/Formula/avm.rb
 
 Or, manually:
 
     git clone https://github.com/tubbo/avm.git
     cd avm
-    make && make install
+    make install
 
 ## Usage
 

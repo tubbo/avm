@@ -10,8 +10,7 @@ already installed.
 
 Install with Homebrew:
 
-    brew tap tubbo
-    brew install avm
+    brew install tubbo/avm/avm
 
 Or, manually:
 

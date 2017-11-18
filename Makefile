@@ -52,7 +52,7 @@ tag:
 	git tag -s -m "Releasing $(VERSION)" v$(VERSION)
 	git push origin master --tags
 
-release: tag download sign
+release: tag download sign formula
 
 rpm:
 	rpmdev-setuptree
@@ -69,5 +69,11 @@ uninstall:
 	for file in $(INSTALL_FILES); do rm -f $(DESTDIR)$(PREFIX)/$$file; done
 	rm -rf $(DESTDIR)$(DOC_DIR)
 	rmdir $(DESTDIR)$(SHARE_DIR)
+
+formula:
+	./script/make-formula.sh $(VERSION) > Formula/avm.rb
+	git commit Formula/avm.rb -m "Update Homebrew formula for $(VERSION)"
+	git push origin master
+
 
 .PHONY: build download sign verify clean check test tag release rpm install uninstall all

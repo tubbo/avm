@@ -38,7 +38,6 @@ verify: $(PKG) $(SIG)
 	gpg --verify $(SIG) $(PKG)
 
 clean:
-	rm -rf test/opt/rubies
 	rm -f $(PKG) $(SIG)
 
 check:

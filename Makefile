@@ -71,9 +71,10 @@ uninstall:
 	rmdir $(DESTDIR)$(SHARE_DIR)
 
 formula:
-	./script/make-formula.sh $(VERSION) > Formula/avm.rb
-	git commit Formula/avm.rb -m "Update Homebrew formula for $(VERSION)"
-	git push origin master
+	@./script/make-formula.sh $(VERSION) > Formula/avm.rb
+	@git add Formula/
+	@git commit -m "Update Homebrew formula for $(VERSION)"
+	@git push origin master
 
 
-.PHONY: build download sign verify clean check test tag release rpm install uninstall all
+.PHONY: build download sign verify clean check test tag release rpm install uninstall all formula

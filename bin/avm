@@ -24,11 +24,14 @@ else
   version=$2
 fi
 
-if [ -f ~/.avm/$service ]; then
-  args="$(cat ~/.avm/$service)"
+
+if [ -f "$HOME/.avm/$service" ]; then
+  args="$(cat $HOME/.avm/$service)"
 fi
 
-args=$argv[3,-1]
+if [ -z "$args" ]; then
+  args=$argv[3,-1]
+fi
 
 if [ $AVM_DRY_RUN ]; then
   echo "docker image pull $service:$version"

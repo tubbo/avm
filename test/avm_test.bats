@@ -31,7 +31,7 @@ setup() {
 }
 
 @test "use arguments in file" {
-  echo "-p 9200:9200" > ~/.avm/foo
+  echo "-p 9200:9200" > $HOME/.avm/foo
   run bin/avm foo 1.4.5
   result="${lines[1]}"
   rm ~/.avm/foo
@@ -40,7 +40,7 @@ setup() {
 }
 
 @test "command arguments overrides file" {
-  echo "-p 9200:9200" > ~/.avm/foo
+  echo "-p 9200:9200" > $HOME/.avm/foo
   run bin/avm foo 1.4.5 -p 9300:9300
   result="${lines[1]}"
   rm ~/.avm/foo

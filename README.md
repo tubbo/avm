@@ -43,3 +43,6 @@ like the following:
 ```
 
 This string of text gets passed verbatim to `docker run`.
+
+[esvm]: https://github.com/elastic/esvm
+[docker]: https://www.docker.com

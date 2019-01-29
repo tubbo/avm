@@ -1,4 +1,4 @@
-#!/usr/local/bin/zsh
+#!/usr/bin/env zsh
 #
 # anything version manager
 
@@ -16,14 +16,23 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+if [ -f $PWD/.esvmrc ]; then
+  avmrc="$PWD/.esvmrc"
+else
+  avmrc="$PWD/.avmrc"
+fi
+
 service=$1
 
-if [ -z "$2" ]; then
-  version="latest"
+if [ -z "$2" && -f "$avmrc" ]; then
+  version=$(cat $avmrc | jq '.defaults.version' | sed 's/\"//g')
 else
   version=$2
 fi
 
+if [ -z "$version" ]; then
+  version='latest'
+fi
 
 if [ -f "$HOME/.avm/$service" ]; then
   args="$(cat $HOME/.avm/$service)"
@@ -33,10 +42,12 @@ if [ "$#" -gt 2 ]; then
   args=$argv[3,-1]
 fi
 
+pull="docker image pull $service:$version"
+cmd="docker run -it $args $service:$version"
+
 if [ $AVM_DRY_RUN ]; then
-  echo "docker image pull $service:$version"
-  echo "docker run $args $service:$version"
+  echo $pul
+  echo $cmd
 else
-  docker image pull $service:$version
-  docker run $args $service:$version
+  $pull && $cmd
 fi

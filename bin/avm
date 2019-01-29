@@ -35,8 +35,8 @@ fi
 
 if [ $AVM_DRY_RUN ]; then
   echo "docker image pull $service:$version"
-  echo "docker run $args $service:$version"
+  echo "docker run -it $args $service:$version"
 else
   docker image pull $service:$version
-  docker run $args $service:$version
+  docker run -it $args $service:$version
 fi

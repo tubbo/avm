@@ -20,55 +20,52 @@ DOC_DIR=$(SHARE_DIR)/doc/$(PKG_NAME)
 all:
 
 pkg:
-	mkdir $(PKG_DIR)
+	@mkdir $(PKG_DIR)
 
 download: pkg
-	wget -O $(PKG) $(URL)/archive/v$(VERSION).tar.gz
+	@wget -O $(PKG) $(URL)/archive/v$(VERSION).tar.gz
 
 build: pkg
-	git archive --output=$(PKG) --prefix=$(PKG_NAME)/ HEAD
+	@git archive --output=$(PKG) --prefix=$(PKG_NAME)/ HEAD
 
 sign: $(PKG)
-	gpg --sign --detach-sign --armor $(PKG)
-	git add $(PKG).asc
-	git commit $(PKG).asc -m "Added PGP signature for v$(VERSION)"
-	git push origin master
+	@gpg --sign --detach-sign --armor $(PKG)
+	@git add $(PKG).asc
+	@git commit $(PKG).asc -m "Added PGP signature for v$(VERSION)"
+	@git push origin master
 
 verify: $(PKG) $(SIG)
-	gpg --verify $(SIG) $(PKG)
+	@gpg --verify $(SIG) $(PKG)
 
 clean:
-	rm -f $(PKG) $(SIG)
-
-check:
-	shellcheck bin/$(NAME)
+	@rm -f $(PKG) $(SIG)
 
 test:
 	SHELL=`command -v bash` bats test
 	SHELL=`command -v zsh`  bats test
 
 tag:
-	git push origin master
-	git tag -s -m "Releasing $(VERSION)" v$(VERSION)
-	git push origin master --tags
+	@git push origin master
+	@git tag -s -m "Releasing $(VERSION)" v$(VERSION)
+	@git push origin master --tags
 
 release: tag download sign formula
 
 rpm:
-	rpmdev-setuptree
-	spectool -g -R rpm/$(NAME).spec
-	rpmbuild -ba rpm/$(NAME).spec
+	@rpmdev-setuptree
+	@spectool -g -R rpm/$(NAME).spec
+	@rpmbuild -ba rpm/$(NAME).spec
 
 install:
-	for dir in $(INSTALL_DIRS); do mkdir -p $(DESTDIR)$(PREFIX)/$$dir; done
-	for file in $(INSTALL_FILES); do cp $$file $(DESTDIR)$(PREFIX)/$$file; done
-	mkdir -p $(DESTDIR)$(DOC_DIR)
-	cp -r $(DOC_FILES) $(DESTDIR)$(DOC_DIR)/
+	@for dir in $(INSTALL_DIRS); do mkdir -p $(DESTDIR)$(PREFIX)/$$dir; done
+	@for file in $(INSTALL_FILES); do cp $$file $(DESTDIR)$(PREFIX)/$$file; done
+	@mkdir -p $(DESTDIR)$(DOC_DIR)
+	@cp -r $(DOC_FILES) $(DESTDIR)$(DOC_DIR)/
 
 uninstall:
-	for file in $(INSTALL_FILES); do rm -f $(DESTDIR)$(PREFIX)/$$file; done
-	rm -rf $(DESTDIR)$(DOC_DIR)
-	rmdir $(DESTDIR)$(SHARE_DIR)
+	@for file in $(INSTALL_FILES); do rm -f $(DESTDIR)$(PREFIX)/$$file; done
+	@rm -rf $(DESTDIR)$(DOC_DIR)
+	@rmdir $(DESTDIR)$(SHARE_DIR)
 
 formula:
 	@./script/make-formula.sh $(VERSION) > Formula/avm.rb

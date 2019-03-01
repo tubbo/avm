@@ -2,9 +2,8 @@
 
 A version manager for any backend service, like databases or cache
 servers, that you can run locally for development purposes. Inspired by
-[esvm][esvm], it uses [Docker][docker] to run your backend services in
-containers, and downloads/updates images automatically if they're not
-already installed.
+[esvm][], it uses [Docker][] to run your backend services in containers,
+and downloads/updates images automatically if they're not already installed.
 
 ## Installation
 
@@ -25,6 +24,13 @@ foreground. For example, if you wanted to install and run Elasticsearch
 v1.5.2:
 
     avm elasticsearch 1.5.2
+
+By default, `docker run` is run with the `--rm --interactive --tty` switches
+applied. This ensures the container is removed after it runs so it doesn't take up
+extra space on your machine, keeps the `STDIN` pipe open, and allocates
+a pseudo-TTY for running commands within the container, if necessary.
+
+### Service Descriptors
 
 For most services, this won't be suitable because the port of the
 service won't be properly mapped. For this, you'll need a **service
@@ -54,7 +60,7 @@ pass.
 
 ## License
 
-Copyright 2017 Tom Scott
+Copyright 2017-2019 Tom Scott
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -63,4 +69,4 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [esvm]: https://github.com/elastic/esvm
-[docker]: https://www.docker.com
+[Docker]: https://www.docker.com

@@ -2,8 +2,8 @@
 #
 # anything version manager
 
-if [ -z "$DOCKER_COMMAND" ]; then
-  DOCKER_COMMAND="docker"
+if [ -z $DOCKER_COMMAND ]; then
+  DOCKER_COMMAND=docker
 fi
 
 if [[ "$(which $DOCKER_COMMAND)" =~ "not found" ]]; then
@@ -16,27 +16,38 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+# The first argument given is always the name of the image to base the
+# container on.
 service=$1
 
+# Default to version 'latest' if none specified
 if [ -z "$2" ]; then
   version="latest"
 else
   version=$2
 fi
 
-
-if [ -f "$HOME/.avm/$service" ]; then
-  args="$(cat $HOME/.avm/$service)"
-fi
-
-if [ "$#" -gt 2 ]; then
-  args=$argv[3,-1]
-fi
-
+# If $AVM_DRY_RUN is set to `true`, print out the commands that would
+# have been run. This is for debug purposes and not normally used in
+# regular workflows.
 if [ $AVM_DRY_RUN ]; then
   echo "docker image pull $service:$version"
-  echo "docker run -it $args $service:$version"
+
+  if [ -f "$HOME/.avm/$service" ]; then
+    echo "docker run --rm -it $(cat $HOME/.avm/$service) $service:$version"
+  else
+    echo "docker run --rm -it $argv[3,-1] $service:$version"
+  fi
+
+  exit 0
+fi
+
+# Pull the image from its repository
+docker image pull $service:$version
+
+# When a service descriptor file has been
+if [ -f "$HOME/.avm/$service" ]; then
+  docker run --rm -it $(cat $HOME/.avm/$service) "$service:$version"
 else
-  docker image pull $service:$version
-  docker run -it $args $service:$version
+  docker run --rm -it $argv[3,-1] "$service:$version"
 fi

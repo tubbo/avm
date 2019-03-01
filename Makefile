@@ -15,9 +15,7 @@ SOURCE_PATH=$(PWD)
 DIRS=bin share
 INSTALL_DIRS=`find $(DIRS) -type d`
 INSTALL_FILES=`find $(DIRS) -type f`
-VERSION_FILE=$(SOURCE_PATH)/share/$(PROGRAM)/VERSION
-VERSION=$(shell cat ${VERSION_FILE})
-DOCS=$(shell find share/doc/man/*.md -type f | sed 's/doc\/man/man\/man1/g' | sed 's/\.md//g')
+VERSION="1.0.0"
 
 PKG_DIR=dist
 PKG_NAME=$(PROGRAM)-$(VERSION)
@@ -26,7 +24,7 @@ TAG=.git/refs/tags/$(VERSION)
 SIG=$(PKG).asc
 
 # Install this script to /usr/local
-build: $(DOCS) $(PKG) $(SIG)
+build: docs/index.html $(PKG) $(SIG)
 
 # Install gem dependencies
 vendor/bundle:
@@ -37,7 +35,7 @@ clobber: clean
 	@rm -rf dist
 
 clean:
-	@rm -rf tmp share/man/man1
+	@rm -rf docs/index.html share/man/man1/avm.1
 
 # Run BATS tests
 test:
@@ -45,23 +43,21 @@ test:
 check: test
 
 # Generate man pages from markdown
-share/man/man1:
-	@mkdir -p share/man/man1
-docs/manual:
-	@mkdir -p docs/manual
-share/man/man1/%.1: vendor/bundle share/man/man1 docs/manual
-	@bundle exec ronn --date="2014-11-01" --manual="User Manual" --organization="$(PROGRAM)" --style=dark share/doc/man/$(@F).md
-	@mv share/doc/man/$(@F) share/man/man1/$(@F)
-	@mv share/doc/man/$(@F).html docs/manual/$(@F).html
+share/man/man1/avm.1:
+share/man/man1/avm.1.html: vendor/bundle
+	@bundle exec ronn --date="2019-03-01" --manual="User Manual" --organization="$(PROGRAM)" share/man/man1/avm.md
+docs/index.html: share/man/man1/avm.1.html
+	@mkdir -p docs
+	@mv share/man/man1/avm.1.html docs/index.html
 
 # Move scripts to /usr/local. Typically requires `sudo` access.
 install:
-	@for dir in $(INSTALL_DIRS); do mkdir -p $(DESTDIR)$(PREFIX)/$$dir; done
-	@for file in $(INSTALL_FILES); do cp $$file $(DESTDIR)$(PREFIX)/$$file; done
+	@cp bin/avm $(PREFIX)/bin/avm
+	@cp share/man/man1/avm.1 $(PREFIX)/share/man/man1/avm.1
 
 # Remove scripts from /usr/local. Typically requires `sudo` access.
 uninstall:
-	@rm -rf $(PREFIX)/$(DIRS)*$(PROGRAM)*
+	@rm -rf $(PREFIX)/bin/avm $(PREFIX)/share/man/man1/avm.1
 
 # Generate a new command
 command:

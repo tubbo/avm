@@ -3,7 +3,7 @@ avm(1) - anything version manager
 
 ## SYNOPSIS
 
-`avm` SERVICE [VERSION] [ARGUMENTS]
+`avm SERVICE [VERSION] [ARGUMENTS]`
 
 ## DESCRIPTION
 

@@ -23,7 +23,8 @@ PKG=$(PKG_DIR)/$(PKG_NAME).tar.gz
 TAG=.git/refs/tags/$(VERSION)
 SIG=$(PKG).asc
 
-# Install this script to /usr/local
+# Install this script to /usr/local and build manpages
+all:
 build: docs/index.html $(PKG) $(SIG)
 
 # Install gem dependencies

@@ -15,7 +15,7 @@ SOURCE_PATH=$(PWD)
 DIRS=bin share
 INSTALL_DIRS=`find $(DIRS) -type d`
 INSTALL_FILES=`find $(DIRS) -type f`
-VERSION="1.0.0"
+VERSION="0.1.2"
 
 PKG_DIR=dist
 PKG_NAME=$(PROGRAM)-$(VERSION)
@@ -24,7 +24,7 @@ TAG=.git/refs/tags/$(VERSION)
 SIG=$(PKG).asc
 
 # Install this script to /usr/local and build manpages
-all:
+all: build
 build: docs/index.html $(PKG) $(SIG)
 
 # Install gem dependencies

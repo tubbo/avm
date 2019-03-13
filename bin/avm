@@ -34,7 +34,7 @@ if [ $AVM_DRY_RUN ]; then
   echo "docker image pull $service:$version"
 
   if [ -f "$HOME/.avm/$service" ]; then
-    echo "docker run --rm -it $(cat $HOME/.avm/$service) $service:$version"
+    echo "docker run --rm -it $(cat $HOME/.avm/$service) $argv[3,-1] $service:$version"
   else
     echo "docker run --rm -it $argv[3,-1] $service:$version"
   fi
@@ -47,7 +47,7 @@ docker image pull $service:$version
 
 # When a service descriptor file has been
 if [ -f "$HOME/.avm/$service" ]; then
-  docker run --rm -it $(cat $HOME/.avm/$service) "$service:$version"
+  docker run --rm -it $(cat $HOME/.avm/$service) $argv[3,-1] "$service:$version"
 else
   docker run --rm -it $argv[3,-1] "$service:$version"
 fi

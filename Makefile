@@ -89,7 +89,7 @@ $(SIG): $(PKG)
 	@gpg --sign --detach-sign --armor $(PKG)
 
 # Release the latest version of Homer to GitHub
-release: build $(TAG)
+release: clean build $(TAG)
 	@git add dist
 	@git commit dist -m "Release v${VERSION}"
 	@git push origin master

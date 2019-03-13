@@ -11,6 +11,10 @@ Install with Homebrew:
 
     brew install https://raw.githubusercontent.com/tubbo/avm/master/Formula/avm.rb
 
+If you don't have Homebrew, you can install it with this one-liner:
+
+    curl -o- -L https://tubbo.github.com/avm/install.sh | bash
+
 Or, manually:
 
     git clone https://github.com/tubbo/avm.git

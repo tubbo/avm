@@ -15,7 +15,7 @@ SOURCE_PATH=$(PWD)
 DIRS=bin share
 INSTALL_DIRS=`find $(DIRS) -type d`
 INSTALL_FILES=`find $(DIRS) -type f`
-VERSION="0.1.2"
+VERSION="0.2.0"
 
 PKG_DIR=dist
 PKG_NAME=$(PROGRAM)-$(VERSION)
@@ -89,8 +89,11 @@ $(SIG): $(PKG)
 	@gpg --sign --detach-sign --armor $(PKG)
 
 # Release the latest version of Homer to GitHub
-release: $(TAG) $(PKG) $(SIG)
-	@git push --all --tags
+release: build $(TAG)
+	@git add dist
+	@git commit dist -m "Release v${VERSION}"
+	@git push origin master
+	@git push origin --tags
 
 # Verify the contents of a package
 verify: $(PKG) $(SIG)
